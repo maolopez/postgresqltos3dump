@@ -52,36 +52,56 @@ Verifying the local dump manually
 ---------------------------------
 
 PYTHONPATH=./src python
+
 from postgresqltos3dump import pgdump
+
 proc = pgdump.dump('postgres://postgres:password@18.220.100.208:80/sample')
+
 f = open('dump.sql', 'wb')
+
 f.write(dump.stdout.read())
-NameError: name 'dump' is not defined
+
 f.write(proc.stdout.read())
-112659 (for example)
+
 f.close()
+
 exit()
+
 cat dump.sql 
+
 
 Verifying the s3 dump manually
 ------------------------------
 
 echo "UPLOADED" > example.txt
+
 PYTHONPATH=./src python
+
 import boto3
+
 from postgresqltos3dump import storage
+
 client = boto3.client('s3')
+
 infile = open('example.txt', 'rb')
+
 storage.s3(client, infile, 'mao1', infile.name)
+
 exit()
 
 
 Verify the wheel remotely
 -------------------------
 python
+
 import boto3
+
 f = open('dist/postgresqltos3dump-1.0-py36-none-any.whl', 'rb')
+
 client = boto3.client('s3')
+
 client.upload_fileobj(f, 'mao1', 'postgresqltos3dump-1.0-py36-none-any.whl')
+
 exit()
+
 NOTE: my_bucket = mao1
